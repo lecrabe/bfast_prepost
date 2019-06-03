@@ -47,12 +47,6 @@ rootdir       <- "~/bfast_prepost/"
 gfcstore_dir  <- "~/downloads/gfc/2018/"
 esastore_dir  <- "~/downloads/ESA_2016/"
 
-## Set the country code
-countrycode <- "COD"
-
-### Read the list of usernames
-users     <- c('amelie','wilfred','remi')
-
 
 ## Go to the root directory
 setwd(rootdir)
@@ -64,7 +58,6 @@ data_dir <- paste0(rootdir,"data/")
 gadm_dir <- paste0(rootdir,"data/gadm/")
 bfst_dir <- paste0(rootdir,"data/bfast/")
 tile_dir <- paste0(rootdir,"data/tiling/")
-chcl_dir <- paste0(rootdir,"data/charcoal_kilns/")
 esa_dir  <- paste0(rootdir,"data/esa_cci/")
 
 dir.create(gfcstore_dir,showWarnings = F)
@@ -75,6 +68,8 @@ dir.create(gadm_dir,showWarnings = F)
 dir.create(tile_dir,showWarnings = F)
 dir.create(bfst_dir,showWarnings = F)
 dir.create(esa_dir,showWarnings = F)
+
+source(paste0(scriptdir,"parameters.R"),echo = T)
 
 ############ CREATE A FUNCTION TO GENERATE REGULAR GRIDS
 generate_grid <- function(aoi,size){
