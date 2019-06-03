@@ -1,3 +1,3 @@
 ### Repository to pre and post  process BFAST in SEPAL
 
-AMelie et WIlfred sont en train de regarder
+Plusieurs scripts pour preprocesser BFAST (tuilage pays) et post-processer (fusion resultats)

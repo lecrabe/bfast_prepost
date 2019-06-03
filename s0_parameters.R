@@ -41,7 +41,7 @@ packages(stringr)
 packages(tidyr)
 
 ## Set the working directory
-rootdir       <- "~/bfast_tiling/"
+rootdir       <- "~/bfast_prepost/"
 
 ## Set two downloads directories
 gfcstore_dir  <- "~/downloads/gfc/2018/"
