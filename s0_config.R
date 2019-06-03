@@ -69,7 +69,7 @@ dir.create(tile_dir,showWarnings = F)
 dir.create(bfst_dir,showWarnings = F)
 dir.create(esa_dir,showWarnings = F)
 
-source(paste0(scriptdir,"parameters.R"),echo = T)
+source(paste0(rootdir,"parameters.R"),echo = T)
 
 ############ CREATE A FUNCTION TO GENERATE REGULAR GRIDS
 generate_grid <- function(aoi,size){
