@@ -16,7 +16,7 @@ proj4string(aoi)
 (bb    <- extent(aoi))
 
 ### What grid size do we need ? 
-grid_size <- 20000          ## in meters
+grid_size <- tile_size*1000          ## in meters
 
 ### GENERATE A GRID
 sqr_df <- generate_grid(aoi,grid_size/111320)
@@ -41,14 +41,20 @@ plot(tiles)
 plot(aoi_geo,add=T,border="blue")
 
 
-
-
 ### Assign each tile with a username
 df        <- data.frame(cbind(tiles@data[,"tileID"],users))
 names(df) <- c("tileID","username")
 
 df$tileID <- as.numeric(df$tileID)
 table(df$username)
+nbatch <- ceiling(max(table(df$username))/nbatchmax)
+
+df <- arrange(df,username)
+df <- cbind(df,rep(1:nbatch,ceiling(nrow(df)/nbatch))[1:nrow(df)])
+names(df) <- c("tileID","username","batch")
+df <- arrange(df,tileID)
+
+table(df$username,df$batch)
 
 ### Create a final subset corresponding to your username
 tiles@data <- df 
@@ -62,14 +68,17 @@ writeOGR(obj=tiles,
          driver = "KML",
          overwrite_layer = T)
 
+
+
 for(username in users){
-  my_tiles <- tiles[tiles$tileID %in% df[df$username == username,"tileID"],]
-  
+  for(batch in 1:nbatch){
+  my_tiles <- tiles[tiles$tileID %in% df[df$username == username & df$batch == batch,"tileID"],]
+
   plot(my_tiles,add=T,col="green")
   length(my_tiles)
   
   ### Export the final subset
-  export_name <- export_name <- paste0("tiles_",username)
+  export_name <-  paste0(countrycode,"_tiles_",username,"_batch",batch)
   
   writeOGR(obj=my_tiles,
            dsn=paste(tile_dir,export_name,".kml",sep=""),
@@ -77,12 +86,13 @@ for(username in users){
            driver = "KML",
            overwrite_layer = T)
   
-  ### Export the ONE TILE IN THE subset
-  export_name <- paste0("one_tile_",username)
-  
-  writeOGR(obj=my_tiles[1,],
-           dsn=paste(tile_dir,export_name,".kml",sep=""),
-           layer= export_name,
-           driver = "KML",
-           overwrite_layer = T)
+  # ### Export the ONE TILE IN THE subset
+  # export_name <- paste0("jour_j_",username)
+  # 
+  # writeOGR(obj=my_tiles[51:100,],
+  #          dsn=paste(tile_dir,export_name,".kml",sep=""),
+  #          layer= export_name,
+  #          driver = "KML",
+  #          overwrite_layer = T)
+  }
 }
